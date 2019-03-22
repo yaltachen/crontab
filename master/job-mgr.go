@@ -131,7 +131,6 @@ func (jm *JobMgr) ListJobs() (jobs []*common.Job, err error) {
 			continue
 		} else {
 			jobs = append(jobs, job)
-			log.Printf("job: %v\r\n", job)
 		}
 	}
 

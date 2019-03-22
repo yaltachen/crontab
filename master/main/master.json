@@ -1,7 +1,20 @@
 {
+    "api server 端口": "提供job的增删改查和强杀功能",
     "api_port": 8070,
+
+    "api server读超时": "单位毫秒",
     "read_time_out": 5000,
+
+    "api server写超时": "单位毫秒",
     "write_time_out": 5000,
+
+    "ectd连接超时时间": "单位毫秒",
     "etcd_dial_time_out": 5000,
-    "etcd_end_points": ["211.159.180.190:2379"]
+
+    "etcd集群IP": "配置多个，避免单点故障",
+    "etcd_end_points": ["211.159.180.190:2379"],
+
+    "web页面根目录": "静态页面，前后端分离",
+    "web_root": "./templates/"
+    
 }

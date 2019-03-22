@@ -26,6 +26,10 @@ func InitApiServer() error {
 
 	router = gin.Default()
 
+	router.StaticFS("/statics", http.Dir(G_cfg.WebRoot))
+
+	router.GET("/home", handleHome)
+
 	router.POST("/job/:job-name", handleJobSave)
 	router.DELETE("/job/:job-name", handleJobDel)
 	router.GET("/job", handleJobList)

@@ -11,6 +11,7 @@ type Configuration struct {
 	WriteTimeOut    int64    `json:"write_time_out,omitempty"`
 	EtcdDialTimeOut int64    `json:"etcd_dial_time_out,omitempty"`
 	EtcdEndPoints   []string `json:"etcd_end_points,omitempty"`
+	WebRoot         string   `json:"web_root,omitempty"`
 }
 
 var G_cfg *Configuration

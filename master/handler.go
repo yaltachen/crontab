@@ -4,10 +4,29 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"text/template"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yaltachen/crontab/common"
 )
+
+func handleHome(ctx *gin.Context) {
+	var (
+		t   *template.Template
+		err error
+	)
+	if t, err = template.ParseFiles(G_cfg.WebRoot + "home.html"); err != nil {
+		log.Printf("home.html parse failed. Error: %v\r\n", err)
+		ctx.JSON(500, ErrTemplateParse)
+		return
+	}
+
+	if err = t.Execute(ctx.Writer, nil); err != nil {
+		log.Printf("home.html template execute failed. Error: %v\r\n", err)
+		ctx.JSON(500, ErrTemplateExecute)
+		return
+	}
+}
 
 // save job
 // post /job/:job-name job={"name": "job1", "command": "echo hello", "cronExpr": "*****"}
@@ -104,7 +123,7 @@ func handleJobKill(ctx *gin.Context) {
 	}
 
 	if err = G_jobMgr.KillJob(jobName); err != nil {
-		log.Printf("Kill job failed. Error: %v\r\n", err)
+		log.Printf("Kill <job: %s> failed. Error: %v\r\n", jobName, err)
 		ctx.JSON(500, ErrKillJob)
 		return
 	}
