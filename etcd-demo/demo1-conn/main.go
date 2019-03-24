@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"go.etcd.io/clientv3"
+	"go.etcd.io/etcd/clientv3"
 )
 
 var (
