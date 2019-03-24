@@ -6,10 +6,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/coreos/etcd/mvcc/mvccpb"
-
-	"github.com/coreos/etcd/clientv3"
 	"github.com/yaltachen/crontab/common"
+	"go.etcd.io/etcd/clientv3"
+	"go.etcd.io/etcd/mvcc/mvccpb"
 )
 
 type JobMgr struct {

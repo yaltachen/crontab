@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/clientv3"
 )
 
 var (
