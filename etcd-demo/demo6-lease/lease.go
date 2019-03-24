@@ -40,9 +40,9 @@ func main() {
 	}
 
 	leaseID = leaseGrantResp.ID
-	fiveSecond, _ := context.WithTimeout(context.TODO(), 5*time.Second)
+	// fiveSecond, _ := context.WithTimeout(context.TODO(), 5*time.Second)
 
-	if keepRespChan, err = lease.KeepAlive(fiveSecond, leaseID); err != nil {
+	if keepRespChan, err = lease.KeepAlive(context.TODO(), leaseID); err != nil {
 		log.Printf("keepAlive failed. Error: %v\r\n", err)
 		return
 	}
@@ -63,7 +63,7 @@ func main() {
 	END:
 	}()
 
-	if _, err = kv.Put(context.TODO(), "/cron/lock/job1", "this is job1", clientv3.WithLease(leaseID)); err != nil {
+	if _, err = kv.Put(context.TODO(), "/job1", "this is job1", clientv3.WithLease(leaseID)); err != nil {
 		log.Printf("put failed. Error: %v\r\n", err)
 		return
 	}
@@ -76,7 +76,7 @@ forloop:
 	for {
 		select {
 		case <-ticker.C:
-			if getResp, err = kv.Get(context.TODO(), "/cron/lock/job1", clientv3.WithPrevKV()); err != nil {
+			if getResp, err = kv.Get(context.TODO(), "/job1", clientv3.WithPrevKV()); err != nil {
 				log.Printf("get failed. Error: %v\r\n", err)
 			}
 			if getResp.Count == 0 {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"text/template"
 
 	"github.com/gin-gonic/gin"
@@ -51,6 +52,8 @@ func handleJobSave(ctx *gin.Context) {
 		ctx.JSON(500, ErrSaveJob)
 		return
 	}
+
+	log.Printf("old job is: %v", oldJob)
 
 	ctx.JSON(200, common.Resp{
 		ErrCode: 0,
@@ -128,4 +131,59 @@ func handleJobKill(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(200, common.Resp{ErrCode: 0, ErrMsg: "ok"})
+}
+
+// GET /log/:job-name/:skip/:limit
+func handleLogList(ctx *gin.Context) {
+	var (
+		jobName string
+		skip    int
+		limit   int
+		logArr  []*common.JobLog
+		err     error
+	)
+	if jobName = ctx.Param("job-name"); len(jobName) == 0 {
+		log.Printf("empty job-name")
+		ctx.JSON(http.StatusBadRequest, ErrEmptyJobName)
+		return
+	}
+	if skip, err = strconv.Atoi(ctx.Param("skip")); err != nil {
+		log.Printf("illegal skip")
+		ctx.JSON(http.StatusBadRequest, ErrBadSkipValue)
+		return
+	}
+	if limit, err = strconv.Atoi(ctx.Param("limit")); err != nil {
+		log.Printf("illegal limit")
+		ctx.JSON(http.StatusBadRequest, ErrBadLimitValue)
+		return
+	}
+
+	if logArr, err = G_logMgr.ListLog(jobName, skip, limit); err != nil {
+		log.Printf("list job:%s logs failed. Error: %v\r\n", jobName, err)
+		ctx.JSON(500, ErrListJobLog)
+		return
+	}
+
+	ctx.JSON(200, common.Resp{
+		Data:    logArr,
+		ErrCode: 0,
+		ErrMsg:  "ok",
+	})
+	return
+}
+
+func handleGetOnlineWorkers(ctx *gin.Context) {
+	var (
+		err     error
+		workers []*common.OnlineWorker
+	)
+	if workers, err = G_workerMgr.GetOnlineWorkers(); err != nil {
+		ctx.JSON(500, ErrListWorkers)
+		return
+	}
+	ctx.JSON(200, common.Resp{
+		ErrCode: 0,
+		ErrMsg:  "ok",
+		Data:    workers,
+	})
 }

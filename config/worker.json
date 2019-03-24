@@ -1,0 +1,26 @@
+{
+    "api server 端口": "提供job的增删改查和强杀功能",
+    "api_server_port": 8090,
+
+    "api server读超时": "单位毫秒",
+    "read_time_out": 5000,
+
+    "api server写超时": "单位毫秒",
+    "write_time_out": 5000,
+
+    "ectd连接超时时间": "单位毫秒",
+    "etcd_dial_timeout": 5000,
+
+    "etcd集群IP": "配置多个，避免单点故障",
+    "etcd_end_points": ["211.159.180.190:2379"],
+
+    "脚本解释器": "用于executor",
+    "bin": "C:/Program Files/Git/bin/bash",
+
+    "以100条为一个批次向mongodb提交日志": "避免每次提交造成网络时延",
+    "job_log_batch_size": 100,
+
+    "mongodb_uri": "mongodb://211.159.180.190:27017/",
+    "mongodb_connect_timeout": 5000,
+    "job_log_commit_timeout": 5000
+}

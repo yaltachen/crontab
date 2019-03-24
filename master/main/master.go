@@ -46,6 +46,16 @@ func main() {
 		goto ERR
 	}
 
+	// init log-sink
+	if err = master.InitLogSink(); err != nil {
+		goto ERR
+	}
+
+	// init worker-mgr
+	if err = master.InitWorkerMgr(); err != nil {
+		goto ERR
+	}
+
 	<-running
 
 ERR:

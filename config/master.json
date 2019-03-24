@@ -15,6 +15,10 @@
     "etcd_end_points": ["211.159.180.190:2379"],
 
     "web页面根目录": "静态页面，前后端分离",
-    "web_root": "./templates/"
+    "web_root": "../templates/",
+
+    
+    "mongodb_uri": "mongodb://211.159.180.190:27017/",
+    "mongodb_connect_timeout": 5000
     
 }

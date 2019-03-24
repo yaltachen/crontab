@@ -30,11 +30,19 @@ func InitApiServer() error {
 
 	router.GET("/home", handleHome)
 
+	// 任务增删改查
 	router.POST("/job/:job-name", handleJobSave)
 	router.DELETE("/job/:job-name", handleJobDel)
 	router.GET("/job", handleJobList)
 
+	// 查看任务日志
+	router.GET("/log/:job-name/:skip/:limit", handleLogList)
+
+	// 强杀任务
 	router.POST("/kill/:job-name", handleJobKill)
+
+	// 查看健康节点
+	router.GET("/worker", handleGetOnlineWorkers)
 
 	if listener, err = net.Listen("tcp", ":"+strconv.Itoa(G_cfg.ApiPort)); err != nil {
 		return err
