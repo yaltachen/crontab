@@ -1,6 +1,7 @@
 package worker
 
 import (
+	"math/rand"
 	"os/exec"
 	"time"
 
@@ -33,6 +34,9 @@ func (e *Executor) ExecuteJob(info *common.JobExecuteInfo) {
 
 		// 上锁
 		jobLocker = G_jobMgr.NewLocker(info.Job.Name)
+
+		// 随机睡眠(0~1s)，尽量保证任务均匀分配
+		time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
 
 		startTime = time.Now()
 		if err = jobLocker.TryLock(); err != nil {
