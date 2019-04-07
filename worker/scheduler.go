@@ -166,6 +166,7 @@ func (s *Scheduler) handleJobResult(jobResult *common.JobExecuteResult) {
 	var (
 		jobLog *common.JobLog
 	)
+	jobLog = &common.JobLog{}
 	// 从JobExecutingTable中删除
 	s.JobExecutingTable.Delete(jobResult.ExecuteInfo.Job.Name)
 
@@ -177,20 +178,21 @@ func (s *Scheduler) handleJobResult(jobResult *common.JobExecuteResult) {
 	// 		jobResult.ExecuteInfo.Job.Name, jobResult.StartTime, jobResult.EndTime, string(jobResult.Output))
 	// }
 
-	if jobResult.Err == nil {
+	if jobResult.Err != common.ERR_KEY_ALREADY_REQUIRED {
 		jobLog = &common.JobLog{
 			JobName:      jobResult.ExecuteInfo.Job.Name,
 			Command:      jobResult.ExecuteInfo.Job.Command,
-			Err:          "",
 			Output:       string(jobResult.Output),
 			PlanTime:     jobResult.ExecuteInfo.PlanExeTime.UnixNano() / 1000 / 1000,
 			ScheduleTime: jobResult.ExecuteInfo.RealExeTime.UnixNano() / 1000 / 1000,
 			StartTime:    jobResult.StartTime.UnixNano() / 1000 / 1000,
 			EndTime:      jobResult.EndTime.UnixNano() / 1000 / 1000,
 		}
-	}
-	if jobResult.Err != nil {
-		jobLog.Err = jobResult.Err.Error()
+		if jobResult.Err != nil {
+			jobLog.Err = jobResult.Err.Error()
+		} else {
+			jobLog.Err = ""
+		}
 	}
 	// TODO: 存储到mongodb
 	G_logSink.logChan <- jobLog
