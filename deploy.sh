@@ -2,7 +2,7 @@
 
 cd bin
 
-nohup ./master &
-nohup ./worker &
+nohup ./master --config ../config/master.json &
+nohup ./worker --config ../config/worker.json &
 
 echo "deploy finished"
